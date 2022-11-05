@@ -1,24 +1,29 @@
-import { Table, Popconfirm, Space } from "antd";
+import { Table, Popconfirm, Space, Button } from "antd";
 
-export default function TagsTable({ dataSource, handleUpdate, handleDelete }) {
+export default function TagsTable({
+	dataSource,
+	handleUpdate,
+	handleDelete,
+	showModal,
+}) {
 	const columns = [
 		{
 			key: "name",
 			title: "Name",
 			dataIndex: "name",
-			width: "30%",
+			width: "20%",
 		},
 		{
 			key: "color",
 			title: "Color",
 			dataIndex: "color",
-			width: "20%",
+			width: "10%",
 		},
 		{
 			key: "icon",
 			title: "Icon",
 			dataIndex: "icon",
-			width: "10%",
+			width: "20%",
 		},
 		{
 			key: "order",
@@ -30,14 +35,23 @@ export default function TagsTable({ dataSource, handleUpdate, handleDelete }) {
 			key: "type",
 			title: "Type",
 			dataIndex: "type",
-			width: "20%",
+			width: "10%",
 		},
 		{
 			key: "operation",
+			title: "Actions",
 			dataIndex: "operation",
+			width: "10%",
 			render: (_, record) =>
 				dataSource.length >= 1 ? (
 					<Space>
+						<Button
+							onClick={() => {
+								showModal(record);
+							}}
+						>
+							Edit
+						</Button>
 						<Popconfirm
 							title="Are you sure you want to delete this tag?"
 							onConfirm={() => {
@@ -45,9 +59,8 @@ export default function TagsTable({ dataSource, handleUpdate, handleDelete }) {
 								handleUpdate();
 							}}
 						>
-							<a>Delete</a>
+							<Button danger>Delete</Button>
 						</Popconfirm>
-						<a>Edit</a>
 					</Space>
 				) : null,
 		},

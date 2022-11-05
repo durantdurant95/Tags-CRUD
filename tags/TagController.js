@@ -7,7 +7,7 @@ import TagsModal from "./view/TagsModal";
 export default function TagController({}) {
 	const [dataSource, setDataSource] = useState([]);
 	const [modalOpen, setModalOpen] = useState(false);
-	const [newTag, setNewTag] = useState({
+	const [modalData, setModalData] = useState({
 		name: "",
 		color: "",
 		icon: "",
@@ -34,7 +34,9 @@ export default function TagController({}) {
 		});
 	};
 
-	const showModal = () => {
+	const showModal = (record) => {
+		console.log(record);
+		setModalData(record);
 		setModalOpen(true);
 	};
 
@@ -42,23 +44,29 @@ export default function TagController({}) {
 		setModalOpen(false);
 	};
 
-	const handleAdd = () => {
-		postTag().then(() => {
+	const handleAdd = (tag) => {
+		postTag(tag).then(() => {
+			handleUpdate();
+		});
+	};
+
+	const handleEdit = (tag) => {
+		updateTag(tag).then(() => {
 			handleUpdate();
 		});
 	};
 
 	const handleModalOk = () => {
 		//TODO: Set async await here to wait for uploading data
-		console.log(newTag);
-		handleAdd(newTag);
+		console.log(modalData);
+		handleAdd(modalData);
 		setModalOpen(false);
 	};
 
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
-		setNewTag({
-			...newTag,
+		setModalData({
+			...modalData,
 			[name]: value,
 		});
 	};
@@ -83,13 +91,14 @@ export default function TagController({}) {
 				dataSource={dataSource}
 				handleUpdate={handleUpdate}
 				handleDelete={handleDelete}
+				showModal={showModal}
 			/>
 			<TagsModal
 				showModal={showModal}
 				open={modalOpen}
 				handleModalOk={handleModalOk}
 				handleCancel={handleCancel}
-				newTag={newTag}
+				modalData={modalData}
 				handleInputChange={handleInputChange}
 			/>
 		</>

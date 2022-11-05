@@ -4,7 +4,7 @@ export default function TagsModal({
 	open,
 	handleModalOk,
 	handleCancel,
-	newTag,
+	modalData,
 	handleInputChange,
 }) {
 	const [form] = Form.useForm();
@@ -30,7 +30,7 @@ export default function TagsModal({
 						<Input
 							name="name"
 							placeholder="Name"
-							value={newTag.name}
+							value={modalData.name}
 							onChange={handleInputChange}
 						/>
 					</Form.Item>
@@ -210,7 +210,7 @@ export default function TagsModal({
 						<Input
 							name="order"
 							placeholder="Order"
-							value={newTag.order}
+							value={modalData.order}
 							onChange={handleInputChange}
 						/>
 					</Form.Item>
