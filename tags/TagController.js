@@ -1,61 +1,97 @@
-import { useState } from "react";
-const TagController = () => {
-	const [dataSource, setDataSource] = useState([
-		{
-			key: "1",
-			name: "Rober",
-			color: "blue",
-			icon: "fas fa-user",
-			order: 1,
-			type: "user",
-		},
-		{
-			key: "2",
-			name: "May",
-			color: "blue",
-			icon: "fas fa-user",
-			order: 1.03,
-			type: "user",
-		},
-		{
-			key: "3",
-			name: "Alex",
-			color: "blue",
-			icon: "fas fa-user",
-			order: 1,
-			type: "user",
-		},
-	]);
-	const [count, setCount] = useState(dataSource.length + 1);
+import { useState, useEffect } from "react";
+import { Button } from "antd";
+import { deleteTag, loadTags, postTag } from "./service";
+import TagsTable from "./view/TagsTable";
+import TagsModal from "./view/TagsModal";
+
+export default function TagController({}) {
+	const [dataSource, setDataSource] = useState([]);
+	const [modalOpen, setModalOpen] = useState(false);
+	const [newTag, setNewTag] = useState({
+		name: "",
+		color: "",
+		icon: "",
+		order: "",
+		type: "",
+	});
+
+	useEffect(() => {
+		handleUpdate();
+	}, []);
+
+	const handleUpdate = () => {
+		loadTags()
+			.then((value) => setDataSource(value))
+			.catch((reason) => {
+				// TODO: error manager
+				// ant D.
+			});
+	};
 
 	const handleDelete = (key) => {
-		const newData = dataSource.filter((item) => item.key !== key);
-		setDataSource(newData);
-	};
-	const handleAdd = () => {
-		const newData = {
-			key: count,
-			name: "Name",
-			color: "blue",
-			icon: "fas fa-user",
-			order: 1,
-			type: "user",
-		};
-		setDataSource([...dataSource, newData]);
-		setCount(count + 1);
-	};
-
-	const handleSave = (row) => {
-		const newData = [...dataSource];
-		const index = newData.findIndex((item) => row.key === item.key);
-		const item = newData[index];
-		newData.splice(index, 1, {
-			...item,
-			...row,
+		deleteTag(key).then(() => {
+			handleUpdate();
 		});
-		setDataSource(newData);
 	};
 
-	return { dataSource, handleAdd, handleSave, handleDelete };
-};
-export default TagController;
+	const showModal = () => {
+		setModalOpen(true);
+	};
+
+	const handleCancel = () => {
+		setModalOpen(false);
+	};
+
+	const handleAdd = () => {
+		postTag().then(() => {
+			handleUpdate();
+		});
+	};
+
+	const handleModalOk = () => {
+		//TODO: Set async await here to wait for uploading data
+		console.log(newTag);
+		handleAdd(newTag);
+		setModalOpen(false);
+	};
+
+	const handleInputChange = (e) => {
+		const { name, value } = e.target;
+		setNewTag({
+			...newTag,
+			[name]: value,
+		});
+	};
+
+	return (
+		<>
+			<h1 style={{ textAlign: "center" }}>Tags Controller</h1>
+			<div style={{ textAlign: "right" }}>
+				<Button
+					type="primary"
+					onClick={showModal}
+					style={{
+						marginBottom: 16,
+					}}
+				>
+					<i style={{ marginRight: 10 }} className="fas fa-user-plus"></i>
+					Add new Tag
+				</Button>
+			</div>
+
+			<TagsTable
+				dataSource={dataSource}
+				handleUpdate={handleUpdate}
+				handleDelete={handleDelete}
+			/>
+			<TagsModal
+				showModal={showModal}
+				open={modalOpen}
+				handleModalOk={handleModalOk}
+				handleCancel={handleCancel}
+				newTag={newTag}
+				handleInputChange={handleInputChange}
+			/>
+		</>
+	);
+}
