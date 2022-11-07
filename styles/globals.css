@@ -24,3 +24,13 @@ a {
 		background: black;
 	}
 }
+
+.ant-radio-button-wrapper:not(:first-child)::before {
+	width: 0 !important;
+}
+
+.iconSelector {
+	margin: 3px !important;
+	border: 0 !important;
+	width: 40px !important;
+}

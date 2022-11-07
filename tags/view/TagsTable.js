@@ -4,7 +4,7 @@ export default function TagsTable({
 	dataSource,
 	handleUpdate,
 	handleDelete,
-	showModal,
+	showModalEdit,
 }) {
 	const columns = [
 		{
@@ -47,7 +47,7 @@ export default function TagsTable({
 					<Space>
 						<Button
 							onClick={() => {
-								showModal(record);
+								showModalEdit(record);
 							}}
 						>
 							Edit

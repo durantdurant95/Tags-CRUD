@@ -1,19 +1,26 @@
 import { useState, useEffect } from "react";
 import { Button } from "antd";
-import { deleteTag, loadTags, postTag } from "./service";
+import { deleteTag, loadTags, postTag, updateTag } from "./service";
 import TagsTable from "./view/TagsTable";
 import TagsModal from "./view/TagsModal";
 
 export default function TagController({}) {
 	const [dataSource, setDataSource] = useState([]);
 	const [modalOpen, setModalOpen] = useState(false);
+	const [modalType, setModalType] = useState("Edit");
 	const [modalData, setModalData] = useState({
 		name: "",
-		color: "",
-		icon: "",
-		order: "",
-		type: "",
+		color: "red",
+		icon: "fas fa-bookmark",
+		order: "1",
+		type: "user",
 	});
+	const success = () => {
+		message
+			.loading("Action in progress..", 2.5)
+			.then(() => message.success("Loading finished", 2.5))
+			.then(() => message.info("Loading finished is finished", 2.5));
+	};
 
 	useEffect(() => {
 		handleUpdate();
@@ -34,8 +41,16 @@ export default function TagController({}) {
 		});
 	};
 
-	const showModal = (record) => {
+	const showModalEdit = (record) => {
 		console.log(record);
+		setModalType("Edit");
+		setModalData(record);
+		setModalOpen(true);
+	};
+
+	const showModalAdd = (record) => {
+		console.log(record);
+		setModalType("Add");
 		setModalData(record);
 		setModalOpen(true);
 	};
@@ -57,9 +72,12 @@ export default function TagController({}) {
 	};
 
 	const handleModalOk = () => {
-		//TODO: Set async await here to wait for uploading data
 		console.log(modalData);
-		handleAdd(modalData);
+		if (modalType === "Add") {
+			handleAdd(modalData);
+		} else {
+			handleEdit(modalData);
+		}
 		setModalOpen(false);
 	};
 
@@ -77,7 +95,7 @@ export default function TagController({}) {
 			<div style={{ textAlign: "right" }}>
 				<Button
 					type="primary"
-					onClick={showModal}
+					onClick={showModalAdd}
 					style={{
 						marginBottom: 16,
 					}}
@@ -86,15 +104,14 @@ export default function TagController({}) {
 					Add new Tag
 				</Button>
 			</div>
-
 			<TagsTable
 				dataSource={dataSource}
 				handleUpdate={handleUpdate}
 				handleDelete={handleDelete}
-				showModal={showModal}
+				handleEdit={handleEdit}
+				showModalEdit={showModalEdit}
 			/>
 			<TagsModal
-				showModal={showModal}
 				open={modalOpen}
 				handleModalOk={handleModalOk}
 				handleCancel={handleCancel}
