@@ -10,29 +10,19 @@ export default function TagController({}) {
 	const [modalType, setModalType] = useState("Edit");
 	const [modalData, setModalData] = useState({
 		name: "",
-		color: "red",
+		color: "blue",
 		icon: "fas fa-bookmark",
 		order: "1",
 		type: "user",
 	});
-	const success = () => {
-		message
-			.loading("Action in progress..", 2.5)
-			.then(() => message.success("Loading finished", 2.5))
-			.then(() => message.info("Loading finished is finished", 2.5));
-	};
 
 	useEffect(() => {
 		handleUpdate();
-	}, []);
+		console.log(modalData);
+	}, [modalData]);
 
 	const handleUpdate = () => {
-		loadTags()
-			.then((value) => setDataSource(value))
-			.catch((reason) => {
-				// TODO: error manager
-				// ant D.
-			});
+		loadTags().then((value) => setDataSource(value));
 	};
 
 	const handleDelete = (key) => {

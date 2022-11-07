@@ -56,11 +56,7 @@ export default function TagsModal({
 							name="color"
 							placement="right"
 							content={
-								<Radio.Group
-									optionType="button"
-									name="color"
-									defaultValue={"red"}
-								>
+								<Radio.Group optionType="button" name="color">
 									<Row style={{ marginBottom: "10px" }}>
 										<Radio
 											onClick={hidePop}
@@ -121,7 +117,7 @@ export default function TagsModal({
 											onClick={hidePop}
 											onChange={handleInputChange}
 											style={{
-												backgroundColor: "#1890ff",
+												backgroundColor: "blue",
 												borderRadius: "50%",
 												marginRight: "10px",
 												border: "0",
