@@ -1,6 +1,7 @@
 import { Table, Popconfirm, Space, Button } from "antd";
 
 export default function TagsTable({
+	loading,
 	dataSource,
 	handleUpdate,
 	handleDelete,
@@ -48,7 +49,6 @@ export default function TagsTable({
 						<Button
 							onClick={() => {
 								showModalEdit(record);
-								console.log(record);
 							}}
 						>
 							Edit
@@ -69,7 +69,12 @@ export default function TagsTable({
 
 	return (
 		<>
-			<Table bordered dataSource={dataSource} columns={columns} />
+			<Table
+				bordered
+				loading={loading}
+				dataSource={dataSource}
+				columns={columns}
+			/>
 		</>
 	);
 }

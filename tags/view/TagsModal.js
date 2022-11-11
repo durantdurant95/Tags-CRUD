@@ -49,13 +49,24 @@ export default function TagsModal({
 				<Form
 					form={form}
 					layout="horizontal"
-					initialValues={{
-						name: "",
-						color: "blue",
-						icon: "fas fa-map-pin",
-						order: 0,
-						type: "tag",
-					}}
+					fields={[
+						{
+							name: ["name"],
+							value: modalData.name,
+						},
+						{
+							name: ["color"],
+							value: modalData.color,
+						},
+						{
+							name: ["icon"],
+							value: modalData.icon,
+						},
+						{
+							name: ["type"],
+							value: modalData.type,
+						},
+					]}
 				>
 					<Form.Item
 						label="Name"

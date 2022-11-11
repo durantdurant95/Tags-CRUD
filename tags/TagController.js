@@ -8,12 +8,13 @@ export default function TagController({}) {
 	const [dataSource, setDataSource] = useState([]);
 	const [modalOpen, setModalOpen] = useState(false);
 	const [modalType, setModalType] = useState("Edit");
+	const [loading, setLoading] = useState(true);
 	const [modalData, setModalData] = useState({
 		name: "",
-		color: "",
-		icon: "",
-		order: "",
-		type: "",
+		color: "blue",
+		icon: "fas fa-bookmark",
+		order: 0,
+		type: "tag",
 	});
 
 	useEffect(() => {
@@ -23,26 +24,24 @@ export default function TagController({}) {
 
 	const handleUpdate = () => {
 		loadTags().then((value) => setDataSource(value));
+		setLoading(false);
 	};
 
 	const handleDelete = (key) => {
 		deleteTag(key).then(() => {
+			setLoading(true);
 			handleUpdate();
 		});
 	};
 
 	const showModalEdit = (record) => {
-		console.log(record);
 		setModalType("Edit");
 		setModalData(record);
-		console.log(modalData);
 		setModalOpen(true);
 	};
 
-	const showModalAdd = (record) => {
-		console.log(record);
+	const showModalAdd = () => {
 		setModalType("Add");
-		setModalData(record);
 		setModalOpen(true);
 	};
 
@@ -52,18 +51,19 @@ export default function TagController({}) {
 
 	const handleAdd = (tag) => {
 		postTag(tag).then(() => {
+			setLoading(true);
 			handleUpdate();
 		});
 	};
 
 	const handleEdit = (tag) => {
 		updateTag(tag).then(() => {
+			setLoading(true);
 			handleUpdate();
 		});
 	};
 
 	const handleModalOk = () => {
-		console.log(modalData);
 		if (modalType === "Add") {
 			handleAdd(modalData);
 		} else {
@@ -96,6 +96,7 @@ export default function TagController({}) {
 				</Button>
 			</div>
 			<TagsTable
+				loading={loading}
 				dataSource={dataSource}
 				handleUpdate={handleUpdate}
 				handleDelete={handleDelete}
