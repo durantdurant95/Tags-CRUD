@@ -10,10 +10,10 @@ export default function TagController({}) {
 	const [modalType, setModalType] = useState("Edit");
 	const [modalData, setModalData] = useState({
 		name: "",
-		color: "blue",
-		icon: "fas fa-bookmark",
-		order: "1",
-		type: "user",
+		color: "",
+		icon: "",
+		order: "",
+		type: "",
 	});
 
 	useEffect(() => {
@@ -35,6 +35,7 @@ export default function TagController({}) {
 		console.log(record);
 		setModalType("Edit");
 		setModalData(record);
+		console.log(modalData);
 		setModalOpen(true);
 	};
 

@@ -48,6 +48,7 @@ export default function TagsTable({
 						<Button
 							onClick={() => {
 								showModalEdit(record);
+								console.log(record);
 							}}
 						>
 							Edit

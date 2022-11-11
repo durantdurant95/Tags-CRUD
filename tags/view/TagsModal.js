@@ -30,35 +30,63 @@ export default function TagsModal({
 		<>
 			<Modal
 				title="Tag Info"
-				open={open}
-				onOk={handleModalOk}
-				onCancel={handleCancel}
 				okText="Save"
+				open={open}
+				onCancel={handleCancel}
+				destroyOnClose={true}
+				onOk={() => {
+					form
+						.validateFields()
+						.then((values) => {
+							form.resetFields();
+							handleModalOk(values);
+						})
+						.catch((info) => {
+							console.log("Validate Failed:", info);
+						});
+				}}
 			>
 				<Form
 					form={form}
 					layout="horizontal"
-					name="form_in_modal"
 					initialValues={{
-						modalData,
+						name: "",
+						color: "blue",
+						icon: "fas fa-map-pin",
+						order: 0,
+						type: "tag",
 					}}
 				>
-					<Form.Item label="Name">
+					<Form.Item
+						label="Name"
+						name="name"
+						value={modalData.name}
+						rules={[
+							{
+								required: true,
+								message: "Name field is required",
+							},
+						]}
+					>
 						<Input
 							name="name"
 							placeholder="Name"
-							value={modalData.name}
 							onChange={handleInputChange}
 						/>
 					</Form.Item>
 					<Form.Item label="Color">
 						<Popover
+							title="Select Color"
 							name="color"
 							placement="right"
+							trigger="click"
+							open={openPop}
+							onOpenChange={handleOpenChange}
 							content={
-								<Radio.Group optionType="button" name="color">
+								<Radio.Group name="color" optionType="button">
 									<Row style={{ marginBottom: "10px" }}>
 										<Radio
+											value="red"
 											onClick={hidePop}
 											onChange={handleInputChange}
 											style={{
@@ -67,9 +95,9 @@ export default function TagsModal({
 												marginRight: "10px",
 												border: "0",
 											}}
-											value="red"
 										></Radio>
 										<Radio
+											value="orange"
 											onClick={hidePop}
 											onChange={handleInputChange}
 											style={{
@@ -78,9 +106,9 @@ export default function TagsModal({
 												marginRight: "10px",
 												border: "0",
 											}}
-											value="orange"
 										></Radio>
 										<Radio
+											value="yellow"
 											onClick={hidePop}
 											onChange={handleInputChange}
 											style={{
@@ -89,9 +117,9 @@ export default function TagsModal({
 												marginRight: "10px",
 												border: "0",
 											}}
-											value="yellow"
 										></Radio>
 										<Radio
+											value="green"
 											onClick={hidePop}
 											onChange={handleInputChange}
 											style={{
@@ -100,9 +128,9 @@ export default function TagsModal({
 												marginRight: "10px",
 												border: "0",
 											}}
-											value="green"
 										></Radio>
 										<Radio
+											value="cyan"
 											onClick={hidePop}
 											onChange={handleInputChange}
 											style={{
@@ -111,9 +139,9 @@ export default function TagsModal({
 												marginRight: "10px",
 												border: "0",
 											}}
-											value="cyan"
 										></Radio>
 										<Radio
+											value="blue"
 											onClick={hidePop}
 											onChange={handleInputChange}
 											style={{
@@ -122,11 +150,11 @@ export default function TagsModal({
 												marginRight: "10px",
 												border: "0",
 											}}
-											value="blue"
 										></Radio>
 									</Row>
 									<Row>
 										<Radio
+											value="purple"
 											onClick={hidePop}
 											onChange={handleInputChange}
 											style={{
@@ -135,9 +163,9 @@ export default function TagsModal({
 												marginRight: "10px",
 												border: "0",
 											}}
-											value="purple"
 										></Radio>
 										<Radio
+											value="salmon"
 											onClick={hidePop}
 											onChange={handleInputChange}
 											style={{
@@ -146,9 +174,9 @@ export default function TagsModal({
 												marginRight: "10px",
 												border: "0",
 											}}
-											value="salmon"
 										></Radio>
 										<Radio
+											value="violet"
 											onClick={hidePop}
 											onChange={handleInputChange}
 											style={{
@@ -157,9 +185,9 @@ export default function TagsModal({
 												marginRight: "10px",
 												border: "0",
 											}}
-											value="violet"
 										></Radio>
 										<Radio
+											value="tan"
 											onClick={hidePop}
 											onChange={handleInputChange}
 											style={{
@@ -168,9 +196,9 @@ export default function TagsModal({
 												marginRight: "10px",
 												border: "0",
 											}}
-											value="tan"
 										></Radio>
 										<Radio
+											value="gray"
 											onClick={hidePop}
 											onChange={handleInputChange}
 											style={{
@@ -179,9 +207,9 @@ export default function TagsModal({
 												marginRight: "10px",
 												border: "0",
 											}}
-											value="gray"
 										></Radio>
 										<Radio
+											value="pink"
 											onClick={hidePop}
 											onChange={handleInputChange}
 											style={{
@@ -190,17 +218,13 @@ export default function TagsModal({
 												marginRight: "10px",
 												border: "0",
 											}}
-											value="pink"
 										></Radio>
 									</Row>
 								</Radio.Group>
 							}
-							title="Select Color"
-							trigger="click"
-							open={openPop}
-							onOpenChange={handleOpenChange}
 						>
 							<Button
+								type="primary"
 								style={{
 									width: "20px",
 									heigth: "20px",
@@ -208,7 +232,6 @@ export default function TagsModal({
 									borderRadius: "50%",
 									border: "0",
 								}}
-								type="primary"
 							>
 								{"   "}
 							</Button>
@@ -218,180 +241,181 @@ export default function TagsModal({
 						<>
 							<Radio.Group
 								name="icon"
+								value={modalData.icon}
 								onChange={handleInputChange}
 								optionType="button"
 							>
 								<Row>
 									<Radio
+										value="fas fa-bookmark"
 										className="iconSelector"
 										onChange={handleInputChange}
-										value="fas fa-bookmark"
 									>
 										<i className="fas fa-bookmark"></i>
 									</Radio>
 									<Radio
+										value="fas fa-map-pin"
 										className="iconSelector"
 										onChange={handleInputChange}
-										value="fas fa-map-pin"
 									>
 										<i className="fas fa-map-pin"></i>
 									</Radio>
 									<Radio
+										value="fas fa-gift"
 										className="iconSelector"
 										onChange={handleInputChange}
-										value="fas fa-gift"
 									>
 										<i className="fas fa-gift"></i>
 									</Radio>
 
 									<Radio
+										value="fas fa-graduation-cap"
 										className="iconSelector"
 										onChange={handleInputChange}
-										value="fas fa-graduation-cap"
 									>
 										<i className="fas fa-graduation-cap"></i>
 									</Radio>
 									<Radio
+										value="fas fa-suitcase-rolling"
 										className="iconSelector"
 										onChange={handleInputChange}
-										value="fas fa-suitcase-rolling"
 									>
 										<i className="fas fa-suitcase-rolling"></i>
 									</Radio>
 									<Radio
+										value="fas fa-ruler-vertical"
 										className="iconSelector"
 										onChange={handleInputChange}
-										value="fas fa-ruler-vertical"
 									>
 										<i className="fas fa-ruler-vertical"></i>
 									</Radio>
 									<Radio
+										value="fas fa-file"
 										className="iconSelector"
 										onChange={handleInputChange}
-										value="fas fa-file"
 									>
 										<i className="fas fa-file"></i>
 									</Radio>
 									<Radio
+										value="fas fa-book-open"
 										className="iconSelector"
 										onChange={handleInputChange}
-										value="fas fa-book-open"
 									>
 										<i className="fas fa-book-open"></i>
 									</Radio>
 								</Row>
 								<Row>
 									<Radio
+										value="fas fa-credit-card"
 										className="iconSelector"
 										onChange={handleInputChange}
-										value="fas fa-credit-card"
 									>
 										<i className="fas fa-credit-card"></i>
 									</Radio>
 									<Radio
+										value="fas fa-money-bill"
 										className="iconSelector"
 										onChange={handleInputChange}
-										value="fas fa-money-bill"
 									>
 										<i className="fas fa-money-bill"></i>
 									</Radio>
 									<Radio
+										value="fas fa-dumbbell"
 										className="iconSelector"
 										onChange={handleInputChange}
-										value="fas fa-dumbbell"
 									>
 										<i className="fas fa-dumbbell"></i>
 									</Radio>
 									<Radio
+										value="fas fa-utensils"
 										className="iconSelector"
 										onChange={handleInputChange}
-										value="fas fa-utensils"
 									>
 										<i className="fas fa-utensils"></i>
 									</Radio>
 									<Radio
+										value="fas fa-wine-glass"
 										className="iconSelector"
 										onChange={handleInputChange}
-										value="fas fa-wine-glass"
 									>
 										<i className="fas fa-wine-glass"></i>
 									</Radio>
 									<Radio
+										value="fas fa-pills"
 										className="iconSelector"
 										onChange={handleInputChange}
-										value="fas fa-pills"
 									>
 										<i className="fas fa-pills"></i>
 									</Radio>
 									<Radio
+										value="fas fa-stethoscope"
 										className="iconSelector"
 										onChange={handleInputChange}
-										value="fas fa-stethoscope"
 									>
 										<i className="fas fa-stethoscope"></i>
 									</Radio>
 									<Radio
+										value="fas fa-chair"
 										className="iconSelector"
 										onChange={handleInputChange}
-										value="fas fa-chair"
 									>
 										<i className="fas fa-chair"></i>
 									</Radio>
 								</Row>
 								<Row>
 									<Radio
+										value="fas fa-building"
 										className="iconSelector"
 										onChange={handleInputChange}
-										value="fas fa-building"
 									>
 										<i className="fas fa-building"></i>
 									</Radio>
 									<Radio
+										value="fas fa-landmark"
 										className="iconSelector"
 										onChange={handleInputChange}
-										value="fas fa-landmark"
 									>
 										<i className="fas fa-landmark"></i>
 									</Radio>
 									<Radio
+										value="fas fa-tv"
 										className="iconSelector"
 										onChange={handleInputChange}
-										value="fas fa-tv"
 									>
 										<i className="fas fa-tv"></i>
 									</Radio>
 									<Radio
+										value="fas fa-music"
 										className="iconSelector"
 										onChange={handleInputChange}
-										value="fas fa-music"
 									>
 										<i className="fas fa-music"></i>
 									</Radio>
 									<Radio
+										value="fas fa-gamepad"
 										className="iconSelector"
 										onChange={handleInputChange}
-										value="fas fa-gamepad"
 									>
 										<i className="fas fa-gamepad"></i>
 									</Radio>
 									<Radio
+										value="fas fa-headphones"
 										className="iconSelector"
 										onChange={handleInputChange}
-										value="fas fa-headphones"
 									>
 										<i className="fas fa-headphones"></i>
 									</Radio>
 									<Radio
+										value="fas fa-leaf"
 										className="iconSelector"
 										onChange={handleInputChange}
-										value="fas fa-leaf"
 									>
 										<i className="fas fa-leaf"></i>
 									</Radio>
 									<Radio
+										value="fas fa-carrot"
 										className="iconSelector"
 										onChange={handleInputChange}
-										value="fas fa-carrot"
 									>
 										<i className="fas fa-carrot"></i>
 									</Radio>
@@ -401,9 +425,9 @@ export default function TagsModal({
 					</Form.Item>
 					<Form.Item label="Order">
 						<InputNumber
-							min={1}
+							name="order"
+							min={0}
 							max={1000}
-							defaultValue={1}
 							value={modalData.order}
 							onChange={(x) => {
 								handleInputChange({ target: { name: "order", value: x } });
@@ -411,11 +435,10 @@ export default function TagsModal({
 						/>
 					</Form.Item>
 					<Form.Item
-						name="type"
 						label="Type"
 						className="collection-create-form_last-form-item"
 					>
-						<Radio.Group name="type">
+						<Radio.Group name="type" value={modalData.type}>
 							<Radio onChange={handleInputChange} value="user">
 								User
 							</Radio>
