@@ -19,7 +19,6 @@ export default function TagController({}) {
 
 	useEffect(() => {
 		handleUpdate();
-		console.log(modalData);
 	}, [modalData]);
 
 	const handleUpdate = () => {
