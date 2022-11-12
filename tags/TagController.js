@@ -41,6 +41,13 @@ export default function TagController({}) {
 
 	const showModalAdd = () => {
 		setModalType("Add");
+		setModalData({
+			name: "",
+			color: "blue",
+			icon: "fas fa-bookmark",
+			order: 0,
+			type: "tag",
+		});
 		setModalOpen(true);
 	};
 

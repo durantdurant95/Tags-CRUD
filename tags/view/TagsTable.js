@@ -1,4 +1,4 @@
-import { Table, Popconfirm, Space, Button } from "antd";
+import { Table, Popconfirm, Space, Button, Tooltip } from "antd";
 
 export default function TagsTable({
 	loading,
@@ -46,13 +46,15 @@ export default function TagsTable({
 			render: (_, record) =>
 				dataSource.length >= 1 ? (
 					<Space>
-						<Button
-							onClick={() => {
-								showModalEdit(record);
-							}}
-						>
-							Edit
-						</Button>
+						<Tooltip title="Edit">
+							<Button
+								icon={<i className="fas fa-pen-fancy"></i>}
+								// type="primary"
+								onClick={() => {
+									showModalEdit(record);
+								}}
+							/>
+						</Tooltip>
 						<Popconfirm
 							title="Are you sure you want to delete this tag?"
 							onConfirm={() => {
@@ -60,7 +62,13 @@ export default function TagsTable({
 								handleUpdate();
 							}}
 						>
-							<Button danger>Delete</Button>
+							<Tooltip title="Delete">
+								<Button
+									icon={<i className="fas fa-trash"></i>}
+									// type="primary"
+									danger
+								/>
+							</Tooltip>
 						</Popconfirm>
 					</Space>
 				) : null,
